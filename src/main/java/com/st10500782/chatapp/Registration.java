@@ -9,7 +9,7 @@ package com.st10500782.chatapp;
  * @author TshepoMahudu
  */
 public class Registration {
-     // Registration messages specified in the POE.
+     // Registration messages.
     public static final String USERNAME_SUCCESS = "Username successfully captured.";
     public static final String USERNAME_ERROR = "Username is not correctly formatted; "
             + "please ensure that your username contains an underscore and is no "
@@ -27,7 +27,6 @@ public class Registration {
     /*
      * Regular expression that validates an international cell phone number:
      * a leading "+" followed by an international country code (1-3 digits),
-     * followed by the subscriber number which is no more than ten digits long.
      *
      * Reference: OpenAI (2026) ChatGPT [Large language model].
      * Available at: https://chat.openai.com/ (Accessed: 28 September 2026).
