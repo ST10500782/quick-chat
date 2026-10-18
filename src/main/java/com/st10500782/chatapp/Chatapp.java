@@ -73,6 +73,65 @@ public class Chatapp {
                 System.out.println();
             }
         }
+        
+        // ==============================
+        // part 2: Welcome message and numberic menu.
+        // ==============================
+        System.out.println("\n===================================");
+        System.out.println(" Welcome to QuickChat."); 
+        System.out.println("=====================================");
+        
+        boolean messagingRunning = true;
+        while (messagingRunning) {
+            System.out.println("\n--- QuickChat Menu ---");
+            System.out.println("1) Send Messages"); //[cite: 11]
+            System.out.println("2) Show recently sent messages"); //[cite: 11]
+            System.out.println("3) Quit"); //[cite: 11]
+            
+            String choiceStr = readInput(scanner, "Choose an option (1-3): ");
+            
+            int choice;
+            try {
+                choice = Integer.parseInt(choiceStr.trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number between 1 and 3.");
+                continue;
+            }
+
+            switch (choice) {
+                case 1:
+                    // Prompt user for number of messages and run loop
+                    String numMsgStr = readInput(scanner, "Enter the number of messages you wish to send: "); //[cite: 11]
+                    int numMessages;
+                    try {
+                        numMessages = Integer.parseInt(numMsgStr.trim());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid number format. Returning to menu.");
+                        break;
+                    }
+
+                    Message messageHandler = new Message();
+                    for (int i = 0; i < numMessages; i++) {
+                        System.out.println("\n--- Processing Message " + (i + 1) + " of " + numMessages + " ---");
+                        messageHandler.processMessage(scanner, i);
+                    }
+                    
+                    System.out.println("\nTotal messages processed: " + messageHandler.returnTotalMessages()); //[cite: 13]
+                    break;
+
+                case 2:
+                    System.out.println("Coming Soon."); //[cite: 11]
+                    break;
+
+                case 3:
+                    System.out.println("Exiting QuickChat. Goodbye!");
+                    messagingRunning = false;
+                    break;
+
+                default:
+                    System.out.println("Invalid option. Please choose between 1 and 3.");
+            }
+        }
 
         scanner.close();
     }
