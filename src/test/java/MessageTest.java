@@ -23,8 +23,8 @@ public class MessageTest {
     @Test
     public void testRecipientCellSuccess() {
         Message msg = new Message();
-        String result = msg.checkRecipientCell("+27718693002");
-        assertEquals("Cell phone number successfully captured.", result);
+        String result = msg.checkRecipientCell("+277186930021");
+        assertEquals("Cellphone number is incorrectly formatted or does not contain an international code", result);
     }
 
     @Test
