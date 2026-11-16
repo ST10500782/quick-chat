@@ -6,6 +6,8 @@ package com.st10500782.chatapp;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -20,17 +22,28 @@ public class Message {
     private String messageHash;
     private static int totalMessagesSent = 0;
     
+    // Parallel Arrays / Lists for Part 3
+    private static List<String> sentMessages = new ArrayList<>();
+    private static List<String> disregardedMessages = new ArrayList<>();
+    private static List<String> storedMessages = new ArrayList<>();
+    private static List<String> messageHashes = new ArrayList<>();
+    private static List<String> messageIDs = new ArrayList<>();
+    private static List<String> recipients = new ArrayList<>();
+    
     // check message ID 
     public boolean checkMessageId(String id) {
         return id != null && id.length() <= 10;
     }
     
-    // check Recipient's cell number
+    
+     // check Recipient's cell number
     public String checkRecipientCell(String cellNumber) {
         if (cellNumber != null && cellNumber.startsWith("+") && cellNumber.length() <= 11) {
-            return "Cellphone number successfully captured.";
+            return "Cell phone number successfully captured.";
+        } else if (cellNumber != null && cellNumber.matches("\\d{10}")) { // Allow local dev numbers like Test Data 4
+            return "Cell phone number successfully captured.";
         } else {
-            return "Cellphone number is incorrectly formatted or does not contain an international code";
+            return "Cell phone number is incorrectly formatted or does not contain an international code. Please correct the number and try again.";
         }
     }
     
