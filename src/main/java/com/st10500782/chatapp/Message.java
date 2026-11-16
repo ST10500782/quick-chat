@@ -31,6 +31,8 @@ public class Message {
     private static List<String> messageHashes = new ArrayList<>();
     private static List<String> messageIDs = new ArrayList<>();
     private static List<String> recipients = new ArrayList<>();
+    private static List<String> trackedPayloads = new ArrayList<>();
+    private static List<String> messageStatuses = new ArrayList<>();
     
     // check message ID 
     public boolean checkMessageId(String id) {
@@ -75,18 +77,14 @@ public class Message {
             case 1:
                 totalMessagesSent++;
                 sentMessages.add(text);
-                messageIDs.add(id);
-                recipients.add(recip);
-                messageHashes.add(hash);
+                addTrackedRecord(id, recip, text, hash, "Sent");
                 return "Message successfully sent";
             case 2:
                 disregardedMessages.add(text);
                 return "Press 0 to delete the message";
             case 3:
                 storedMessages.add(text);
-                messageIDs.add(id);
-                recipients.add(recip);
-                messageHashes.add(hash);
+                addTrackedRecord(id, recip, text, hash, "Stored");
                 storeMessageToJSON(id, recip, text, hash);
                 return "Message successfully stored";
             default:
@@ -102,6 +100,14 @@ public class Message {
             e.printStackTrace();
         }
     }
+    
+    private void addTrackedRecord(String id, String recip, String text, String hash, String status) {
+    messageIDs.add(id);
+    recipients.add(recip);
+    trackedPayloads.add(text);
+    messageHashes.add(hash);
+    messageStatuses.add(status);
+}
     
     // Read JSON file into Stored Messages array/list[cite: 17, 45]
     public static void loadStoredMessagesFromJson() {
@@ -122,6 +128,27 @@ public class Message {
     }
     
      // --- Part 3 Feature Requirements ---
+    
+    // Display all recently sent messages (for Main Menu Option 2)
+public void displayRecentlySentMessages() {
+    System.out.println("\n=============================================");
+    System.out.println("           RECENTLY SENT MESSAGES            ");
+    System.out.println("=============================================");
+    boolean found = false;
+    for (int i = 0; i < messageStatuses.size(); i++) {
+        if ("Sent".equals(messageStatuses.get(i))) {
+            System.out.println("Message ID   : " + messageIDs.get(i));
+            System.out.println("Message Hash : " + messageHashes.get(i));
+            System.out.println("Recipient    : " + recipients.get(i));
+            System.out.println("Message      : " + trackedPayloads.get(i));
+            System.out.println("---------------------------------------------");
+            found = true;
+        }
+    }
+    if (!found) {
+        System.out.println("No messages have been sent yet.");
+    }
+}
 
     // a. Display sender/recipient and stored messages
     public void displayStoredSenderAndRecipient() {

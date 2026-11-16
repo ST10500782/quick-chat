@@ -4,6 +4,7 @@
 
 package com.st10500782.chatapp;
 
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -80,7 +81,7 @@ public class Chatapp {
         System.out.println("\n===================================");
         System.out.println(" Welcome to QuickChat."); 
         System.out.println("=====================================");
-        
+        Message messageHandler = new Message();
         boolean messagingRunning = true;
         while (messagingRunning) {
             System.out.println("\n--- QuickChat Menu ---");
@@ -110,7 +111,6 @@ public class Chatapp {
                         break;
                     }
 
-                    Message messageHandler = new Message();
                     for (int i = 0; i < numMessages; i++) {
                         System.out.println("\n--- Processing Message " + (i + 1) + " of " + numMessages + " ---");
                         messageHandler.processMessage(scanner, i);
@@ -120,13 +120,60 @@ public class Chatapp {
                     break;
 
                 case 2:
-                    System.out.println("Coming Soon."); //[cite: 11]
+                    messageHandler.displayRecentlySentMessages();
                     break;
 
                 case 3:
                     System.out.println("Exiting QuickChat. Goodbye!");
                     messagingRunning = false;
                     break;
+                    
+                 case 4:
+    boolean part3Running = true;
+    Message messageManager = new Message();
+    while (part3Running) {
+        System.out.println("\n--- Stored Messages & Report Menu ---");
+        System.out.println("a) Display sender and recipient of all stored messages");
+        System.out.println("b) Display the longest stored/sent message");
+        System.out.println("c) Search for a message ID");
+        System.out.println("d) Search messages by recipient");
+        System.out.println("e) Delete message using message hash");
+        System.out.println("f) Display full message report");
+        System.out.println("g) Return to Main Menu");
+
+        String subChoice = readInput(scanner, "Choose an option (a-g): ").trim().toLowerCase();
+
+        switch (subChoice) {
+            case "a":
+                messageManager.displayStoredSenderAndRecipient();
+                break;
+            case "b":
+                System.out.println("\nLongest Message: \"" + messageManager.getLongestMessage() + "\"");
+                break;
+            case "c":
+                String searchId = readInput(scanner, "Enter Message ID to search: ");
+                System.out.println(messageManager.searchByMessageID(searchId));
+                break;
+            case "d":
+                String searchRecip = readInput(scanner, "Enter recipient number to search: ");
+                List<String> foundMsgs = messageManager.searchByRecipient(searchRecip);
+                System.out.println("\nMessages for " + searchRecip + ": " + foundMsgs);
+                break;
+            case "e":
+                String delHash = readInput(scanner, "Enter Message Hash to delete: ");
+                messageManager.deleteByHash(delHash);
+                break;
+            case "f":
+                messageManager.displayFullReport();
+                break;
+            case "g":
+                part3Running = false;
+                break;
+            default:
+                System.out.println("Invalid option. Choose between a and g.");
+        }
+    }
+break;
 
                 default:
                     System.out.println("Invalid option. Please choose between 1 and 3.");

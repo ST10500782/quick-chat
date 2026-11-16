@@ -1,6 +1,9 @@
 
 import com.st10500782.chatapp.Message;
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /*
@@ -13,11 +16,49 @@ import org.junit.jupiter.api.Test;
  * @author admin
  */
 public class MessageTest {
+    private Message message;
+
+    @BeforeEach
+    public void setUp() {
+        message = new Message();
+        // Populate test data corresponding to POE guidelines
+        message.SentMessage(1, "1234567890", "+27834557896", "Did you get the cake?", "12:0:DIDCAKE");
+        message.SentMessage(3, "1234567891", "+27838884567", "Where are you? You are late! I have asked you to be on time.", "12:1:WHEREETIME");
+        message.SentMessage(2, "1234567892", "+27834484567", "Yohoooo, I am at your gate.", "12:2:YOHOOOGATE");
+        message.SentMessage(1, "0838884567", "0838884567", "It is dinner time!", "08:3:ITTIME");
+        message.SentMessage(3, "1234567894", "+27838884567", "Ok, I am leaving without you.", "12:4:OKYOU");
+    }
+    
    @Test
-    public void testMessageLengthSuccess() {
-        Message msg = andGetInstance();
-        String result = msg.checkMessageLength("Hi Mike, can you join us for dinner tonight?");
-        assertEquals("Message ready to send.", result);
+    public void testSentMessagesArrayPopulation() {
+        List<String> sent = Message.getSentMessages();
+        assertTrue(sent.contains("Did you get the cake?"));
+        assertTrue(sent.contains("It is dinner time!"));
+    }
+    
+    @Test
+    public void testDisplayLongestMessage() {
+        String longest = message.getLongestMessage();
+        assertEquals("Where are you? You are late! I have asked you to be on time.", longest);
+    }
+    
+    @Test
+    public void testSearchByMessageID() {
+        String result = message.searchByMessageID("0838884567");
+        assertTrue(result.contains("It is dinner time!"));
+    }
+    
+    @Test
+    public void testSearchByRecipient() {
+        List<String> recipientMsgs = message.searchByRecipient("+27838884567");
+        assertTrue(recipientMsgs.contains("Where are you? You are late! I have asked you to be on time."));
+        assertTrue(recipientMsgs.contains("Ok, I am leaving without you."));
+    }
+    
+    @Test
+    public void testDeleteByHash() {
+        boolean deleted = message.deleteByHash("12:1:WHEREETIME");
+        assertTrue(deleted);
     }
 
     @Test
@@ -33,15 +74,6 @@ public class MessageTest {
         String hash = msg.createMessageHash("1234567890", 0, "Hi Tonight");
         assertEquals("12:0:HITONIGHT", hash);
     }
-
-    @Test
-    public void testSentMessageActions() {
-        Message msg = new Message();
-        assertEquals("Message successfully sent", msg.SentMessage(1));
-        assertEquals("Press 0 to delete the message", msg.SentMessage(2));
-        assertEquals("Message successfully stored", msg.SentMessage(3));
-    }
-
     private Message andGetInstance() {
         return new Message();
     } 
