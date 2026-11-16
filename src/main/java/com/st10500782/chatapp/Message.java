@@ -67,16 +67,25 @@ public class Message {
         }
     }
     
-    // 5. Store/Send Action Handler and JSON Storage
-    public String SentMessage(int choice) {
+     // 5. Store/Send Action Handler and JSON Storage
+    public String SentMessage(int choice, String id, String recip, String text, String hash) {
         switch (choice) {
             case 1:
                 totalMessagesSent++;
+                sentMessages.add(text);
+                messageIDs.add(id);
+                recipients.add(recip);
+                messageHashes.add(hash);
                 return "Message successfully sent";
             case 2:
+                disregardedMessages.add(text);
                 return "Press 0 to delete the message";
             case 3:
-                storeMessageToJSON();
+                storedMessages.add(text);
+                messageIDs.add(id);
+                recipients.add(recip);
+                messageHashes.add(hash);
+                storeMessageToJSON(id, recip, text, hash);
                 return "Message successfully stored";
             default:
                 return "Invalid choice.";
@@ -84,14 +93,13 @@ public class Message {
     }
     
     // JSON Storage implementation with proper attribution
-    private void storeMessageToJSON() {
+    private void storeMessageToJSON(String id, String recip, String text, String hash) {
         try (FileWriter file = new FileWriter("messages.json", true)) {
-            file.write("{\"ID\":\"" + messageId + "\", \"Recipient\":\"" + recipient + "\", \"Message\":\"" + messageText + "\"}\n");
+            file.write("{\"ID\":\"" + id + "\", \"Recipient\":\"" + recip + "\", \"Hash\":\"" + hash + "\", \"Message\":\"" + text + "\"}\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
     public void processMessage(Scanner scanner, int index) {
         Random rand = new Random();
         this.messageId = String.valueOf(1000000000L + rand.nextLong(900000000L));
