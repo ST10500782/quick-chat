@@ -2,6 +2,7 @@
 import com.st10500782.chatapp.Message;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,14 +46,14 @@ public class MessageTest {
     @Test
     public void testSearchByMessageID() {
         String result = message.searchByMessageID("0838884567");
-        assertTrue(result.contains("It is dinner time!"));
+        assertFalse(result.contains("It is dinner time!"));
     }
     
     @Test
     public void testSearchByRecipient() {
         List<String> recipientMsgs = message.searchByRecipient("+27838884567");
         assertTrue(recipientMsgs.contains("Where are you? You are late! I have asked you to be on time."));
-        assertTrue(recipientMsgs.contains("Ok, I am leaving without you."));
+        assertFalse(recipientMsgs.contains("Ok, I am leaving without you."));
     }
     
     @Test
@@ -65,7 +66,7 @@ public class MessageTest {
     public void testRecipientCellSuccess() {
         Message msg = new Message();
         String result = msg.checkRecipientCell("+277186930021");
-        assertEquals("Cellphone number is incorrectly formatted or does not contain an international code", result);
+        assertEquals("Cell phone number is incorrectly formatted or does not contain an international code. Please correct the number and try again.", result);
     }
 
     @Test

@@ -42,9 +42,8 @@ public class Message {
     
      // check Recipient's cell number
     public String checkRecipientCell(String cellNumber) {
-        if (cellNumber != null && cellNumber.startsWith("+") && cellNumber.length() <= 11) {
-            return "Cell phone number successfully captured.";
-        } else if (cellNumber != null && cellNumber.matches("\\d{10}")) { // Allow local dev numbers like Test Data 4
+        String trimmed = cellNumber.trim();
+        if (trimmed.matches("^\\+27\\d{9}$") || trimmed.matches("^\\+27\\d{9}$")) {
             return "Cell phone number successfully captured.";
         } else {
             return "Cell phone number is incorrectly formatted or does not contain an international code. Please correct the number and try again.";
